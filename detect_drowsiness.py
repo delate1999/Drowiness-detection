@@ -92,3 +92,15 @@ while True:
             COUNTER = 0
             ALARM_ON = False
 
+        cv2.putText(frame, "EAR: {:.2f}".format(ear), (300, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+
+        cv2.imshow("Frame", frame)
+        key = cv2.waitKey(1) & 0xFF
+
+        if key == ord("q"):
+            break
+
+cv2.destroyAllWindows()
+vs.stop()
+
