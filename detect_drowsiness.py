@@ -67,4 +67,28 @@ while True:
 
         ear = (leftEAR + rightEAR) / 2.0
 
+        leftEyeHull = cv2.convexHull(leftEye)
+        rightEyeHull = cv2.convexHull(rightEye)
+        cv2.drawContours(frame, [leftEyeHull], -1, (0, 255, 0), 1)
+        cv2.drawContours(frame, [rightEyeHull], -1, (0, 255, 0), 1)
+
+        if ear < EYE_AR_THRESH:
+            COUNTER += 1
+
+            if COUNTER >= EYE_AR_CONSEC_FRAMES:
+                if not ALARM_ON:
+                    ALARM_ON = True
+
+                    if args["alarm"] != "":
+                        t = Thread(target=sound_alarm,
+                                   args=(args["alarm"],))
+                        t.deamon = True
+                        t.start()
+
+                cv2.putText(frame, "DROWSINESS ALERT!", (10, 30),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+
+        else:
+            COUNTER = 0
+            ALARM_ON = False
 
